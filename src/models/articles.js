@@ -56,6 +56,17 @@ export default {
             },
           });
         }
+
+        if (pathname === '/feed') {
+          dispatch({ type: 'feed' });
+          dispatch({
+            type: 'addTag',
+            payload: {
+              tag: '',
+              tab: 'feed'
+            },
+          });
+        }
       });
     },
   },
@@ -63,6 +74,10 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const result = yield call(articlesService.fetch,  payload);
+      yield put({ type: 'save', payload: { articles: result.data.articles } });
+    },
+    *feed({ payload }, { call, put }) {
+      const result = yield call(articlesService.feed);
       yield put({ type: 'save', payload: { articles: result.data.articles } });
     },
     *get({ payload }, { call, put }) {

@@ -52,7 +52,8 @@ const FollowUserButton = props => {
 const mapStateToProps = state => ({
   // currentUser: state.common.currentUser,
   profile: state.profile.user,
-  articles: state.articles.articles
+  articles: state.articles.articles,
+  tab: state.profile.tab
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -70,16 +71,22 @@ const mapDispatchToProps = dispatch => ({
 
 class Profile extends React.Component {
 
-  // componentWillUnmount() {
-  //   this.props.onUnload();
-  // }
-
   renderTabs() {
+    let myTabClass = 'nav-link', favroitedTabClass = 'nav-link';
+
+    if (this.props.tab === 'my') {
+      myTabClass = myTabClass + ' active';
+    }
+
+    if (this.props.tab === 'favorited') {
+      favroitedTabClass = favroitedTabClass + ' active';
+    }
+
     return (
       <ul className="nav nav-pills outline-active">
         <li className="nav-item">
           <Link
-            className="nav-link active"
+            className={ myTabClass }
             to={`/@${this.props.profile.username}`}>
             My Articles
           </Link>
@@ -87,7 +94,7 @@ class Profile extends React.Component {
 
         <li className="nav-item">
           <Link
-            className="nav-link"
+            className={ favroitedTabClass }
             to={`/@${this.props.profile.username}/favorites`}>
             Favorited Articles
           </Link>

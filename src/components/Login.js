@@ -3,54 +3,48 @@ import { Link } from 'dva/router';
 import React from 'react';
 import { connect } from 'dva';
 
-const mapStateToProps = state => ({ ...state.auth });
-
-class Register extends React.Component {
-  constructor(props) {
-    super(props);
+class Login extends React.Component {
+  constructor() {
+    super();
     this.state = {
-      username: '',
       email: '',
       password: ''
     }
     this.changeEmail = ev => this.setState({ email: ev.target.value });
     this.changePassword = ev => this.setState({ password: ev.target.value });
-    this.changeUsername = ev => this.setState({ username: ev.target.value })
-    this.submitForm = (username, email, password) => ev => {
+    this.submitForm = (email, password) => ev => {
       ev.preventDefault();
       this.props.dispatch({
-        type: 'user/register',
+        type: 'user/login',
         payload: this.state
-      })
-    }
+      });
+    };
+  }
+
+  componentWillUnmount() {
+    // this.props.onUnload();
   }
 
   render() {
+    const email = this.state.email;
+    const password = this.state.password;
     return (
       <div className="auth-page">
         <div className="container page">
           <div className="row">
 
             <div className="col-md-6 offset-md-3 col-xs-12">
-              <h1 className="text-xs-center">Sign Up</h1>
+              <h1 className="text-xs-center">Sign In</h1>
               <p className="text-xs-center">
-                <Link to="/login">
-                  Have an account?
+                <Link to="/register">
+                  Need an account?
                 </Link>
               </p>
 
               {/* <ListErrors errors={this.props.errors} /> */}
 
-              <form onSubmit={this.submitForm()}>
+              <form onSubmit={this.submitForm(email, password)}>
                 <fieldset>
-
-                  <fieldset className="form-group">
-                    <input
-                      className="form-control form-control-lg"
-                      type="text"
-                      placeholder="Username"
-                      onChange={this.changeUsername} />
-                  </fieldset>
 
                   <fieldset className="form-group">
                     <input
@@ -72,7 +66,7 @@ class Register extends React.Component {
                     className="btn btn-lg btn-primary pull-xs-right"
                     type="submit"
                     disabled={this.props.inProgress}>
-                    Sign up
+                    Sign in
                   </button>
 
                 </fieldset>
@@ -86,4 +80,4 @@ class Register extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Register);
+export default connect()(Login);

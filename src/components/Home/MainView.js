@@ -5,16 +5,10 @@ import { Link } from 'dva/router';
 
 const YourFeedTab = props => {
   if (props.token) {
-    const clickHandler = ev => {
-      ev.preventDefault();
-      props.onTabClick('feed');
-    }
-
     return (
       <li className="nav-item">
-        <Link to="/"
-            className={ props.tab === 'feed' ? 'nav-link active' : 'nav-link' }
-            onClick={clickHandler}>
+        <Link to="/feed"
+            className={ props.tab === 'feed' ? 'nav-link active' : 'nav-link' }>
           Your Feed
         </Link>
       </li>
@@ -51,26 +45,22 @@ const TagFilterTab = props => {
 
 const mapStateToProps = state => ({
   articles: state.articles.articles,
-  token: state.user.token,
+  isAuthenticated: state.user.isAuthenticated,
   tab: state.articles.tab,
   tag: state.articles.tag
 });
 
-function MainView({ dispatch, articles, token, tab, tag }) {
-  const onTabClick = () => {
-    
-  }
+function MainView({ dispatch, articles, isAuthenticated, tab, tag }) {
   return (
     <div className="col-md-9">
       <div className="feed-toggle">
         <ul className="nav nav-pills outline-active">
 
           <YourFeedTab
-            token={token}
-            tab={tab}
-            onTabClick={onTabClick} />
+            token={isAuthenticated}
+            tab={tab}/>
 
-          <GlobalFeedTab tab={tab} onTabClick={onTabClick} />
+          <GlobalFeedTab tab={tab}/>
 
           <TagFilterTab tag={tag} />
 

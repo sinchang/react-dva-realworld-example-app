@@ -4,6 +4,7 @@ import Home from './routes/Home';
 import Register from './routes/Register';
 import Article from './routes/Article';
 import Profile from './routes/Profile';
+import Login from './routes/Login';
 
 function RouterConfig({ history }) {
   return (
@@ -11,8 +12,10 @@ function RouterConfig({ history }) {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/register" exact component={Register} />
+        <Route path="/login" exact component={Login} />
         <Route path="/article/:slug" exact component={Article} />
         <Route path="/tag/:tag" exact component={Home} />
+        <Route path="/feed" exact component={Home} />
         <Route path="/@:username" exact component={Profile} />
         <Route path="/@:username/favorites" exact component={Profile} />
       </Switch>

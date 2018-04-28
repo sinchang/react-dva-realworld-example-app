@@ -12,3 +12,9 @@ export function get(slug) {
     method: 'GET'
   });
 }
+
+export function feed() {
+  return request(`/articles/feed`, {
+    method: 'GET'
+  });
+}

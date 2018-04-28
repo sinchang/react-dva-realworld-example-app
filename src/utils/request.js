@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import { getToken }  from './storage';
 
 function parseJSON(response) {
   return response.json();
@@ -22,7 +23,11 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  url = 'http://localhost:7001' + url
+  url = 'http://localhost:7001' + url;
+  options.headers = {
+    'Authorization': 'Bearer ' + getToken(),
+    'Content-Type': 'application/json'
+  }
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)

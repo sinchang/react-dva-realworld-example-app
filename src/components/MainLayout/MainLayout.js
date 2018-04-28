@@ -4,7 +4,7 @@ import Header from './Header';
 function MainLayout({ children }) {
   return (
     <div>
-      <Header appName="realworld" currentUser={{}} />
+      <Header appName="realworld" />
         {children}
     </div>
   );

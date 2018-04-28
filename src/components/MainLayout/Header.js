@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'dva/router';
+import { connect } from 'dva';
+import { getToken } from '../../utils/storage'
 
 const LoggedOutView = props => {
   if (!props.currentUser) {
@@ -69,7 +71,16 @@ const LoggedInView = props => {
   return null;
 };
 
+const mapStateToProps = state => ({ user: state.user.user });
+
 class Header extends React.Component {
+  componentWillMount() {
+    if (getToken() && !this.props.user) {
+      this.props.dispatch({
+        type: 'user/current'
+      })
+    }
+  }
   render() {
     return (
       <nav className="navbar navbar-light">
@@ -79,13 +90,13 @@ class Header extends React.Component {
             {this.props.appName.toLowerCase()}
           </Link>
 
-          <LoggedOutView currentUser={this.props.currentUser} />
+          <LoggedOutView currentUser={this.props.user} />
 
-          <LoggedInView currentUser={this.props.currentUser} />
+          <LoggedInView currentUser={this.props.user} />
         </div>
       </nav>
     );
   }
 }
 
-export default Header;
+export default connect(mapStateToProps)(Header);
