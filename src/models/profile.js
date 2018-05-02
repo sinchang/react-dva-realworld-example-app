@@ -40,6 +40,14 @@ export default {
     },
     *update({ payload }, { put }) {
       yield put({ type: 'save', payload: { tab: payload.tab }})
+    },
+    *follow({ payload }, { put, call }) {
+      const result = yield call(profileService.follow, payload.username);
+      yield put({ type: 'save', payload: { user: result.data.profile } });
+    },
+    *unfollow({ payload }, { put, call }) {
+      const result = yield call(profileService.unfollow, payload.username);
+      yield put({ type: 'save', payload: { user: result.data.profile } });
     }
   },
 

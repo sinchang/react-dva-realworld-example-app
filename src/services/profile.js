@@ -5,3 +5,15 @@ export function fetch(username) {
     method: 'GET'
   });
 }
+
+export function follow(username) {
+  return request(`/profiles/${username}/follow`, {
+    method: 'POST'
+  });
+}
+
+export function unfollow(username) {
+  return request(`/profiles/${username}/follow`, {
+    method: 'DELETE'
+  });
+}

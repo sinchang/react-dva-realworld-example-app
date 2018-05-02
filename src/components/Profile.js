@@ -18,12 +18,12 @@ const EditProfileSettings = props => {
 };
 
 const FollowUserButton = props => {
-  if (props.isUser) {
+  if (props.isUser || !props.isAuthenticated) {
     return null;
   }
 
   let classes = 'btn btn-sm action-btn';
-  if (props.user.following) {
+  if (props.profile.following) {
     classes += ' btn-secondary';
   } else {
     classes += ' btn-outline-secondary';
@@ -31,10 +31,10 @@ const FollowUserButton = props => {
 
   const handleClick = ev => {
     ev.preventDefault();
-    if (props.user.following) {
-      props.unfollow(props.user.username)
+    if (props.profile.following) {
+      props.dispatch({ type: 'profile/unfollow', payload: { username: props.profile.username }});
     } else {
-      props.follow(props.user.username)
+      props.dispatch({ type: 'profile/follow', payload: { username: props.profile.username }});
     }
   };
 
@@ -44,29 +44,17 @@ const FollowUserButton = props => {
       onClick={handleClick}>
       <i className="ion-plus-round"></i>
       &nbsp;
-      {props.user.following ? 'Unfollow' : 'Follow'} {props.user.username}
+      {props.profile.following ? 'Unfollow' : 'Follow'} {props.profile.username}
     </button>
   );
 };
 
 const mapStateToProps = state => ({
-  // currentUser: state.common.currentUser,
   profile: state.profile.user,
+  currentUser: state.user.user,
   articles: state.articles.articles,
-  tab: state.profile.tab
-});
-
-const mapDispatchToProps = dispatch => ({
-  // onFollow: username => dispatch({
-  //   type: FOLLOW_USER,
-  //   payload: agent.Profile.follow(username)
-  // }),
-  // onLoad: payload => dispatch({ type: PROFILE_PAGE_LOADED, payload }),
-  // onUnfollow: username => dispatch({
-  //   type: UNFOLLOW_USER,
-  //   payload: agent.Profile.unfollow(username)
-  // }),
-  // onUnload: () => dispatch({ type: PROFILE_PAGE_UNLOADED })
+  tab: state.profile.tab,
+  isAuthenticated: state.user.isAuthenticated
 });
 
 class Profile extends React.Component {
@@ -105,6 +93,8 @@ class Profile extends React.Component {
 
   render() {
     const profile = this.props.profile;
+    const dispatch = this.props.dispatch;
+    const isAuthenticated = this.props.isAuthenticated;
     if (!profile) {
       return null;
     }
@@ -127,9 +117,9 @@ class Profile extends React.Component {
                 <EditProfileSettings isUser={isUser} />
                 <FollowUserButton
                   isUser={isUser}
-                  user={profile}
-                  follow={this.props.onFollow}
-                  unfollow={this.props.onUnfollow}
+                  isAuthenticated={isAuthenticated}
+                  dispatch={dispatch}
+                  profile={profile}
                   />
 
               </div>
@@ -161,4 +151,4 @@ class Profile extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

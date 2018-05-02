@@ -25,9 +25,15 @@ function checkStatus(response) {
 export default function request(url, options) {
   url = 'http://localhost:7001' + url;
   options.headers = {
-    'Authorization': 'Bearer ' + getToken(),
     'Content-Type': 'application/json'
   }
+
+  const token = getToken();
+
+  if (token) {
+    options.headers.Authorization = 'Bearer ' + token;
+  }
+
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
