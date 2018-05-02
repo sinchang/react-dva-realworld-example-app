@@ -83,6 +83,15 @@ export default {
     *get({ payload }, { call, put }) {
       const result = yield call(articlesService.get, payload.slug);
       yield put({ type: 'save', payload: { article: result.data.article } });
+      yield put({ type: 'profile/save', payload: { user: result.data.article.author } });
+    },
+    *favorite({ payload }, { call, put }) {
+      const result = yield call(articlesService.favorite, payload.slug);
+      yield put({ type: 'save', payload: { article: result.data.article } });
+    },
+    *unFavorite({ payload }, { call, put }) {
+      const result = yield call(articlesService.unFavorite, payload.slug);
+      yield put({ type: 'save', payload: { article: result.data.article } });
     },
     *addTag({ payload }, { put }) {
       yield put({ type: 'save', payload })

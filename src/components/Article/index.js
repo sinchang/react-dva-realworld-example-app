@@ -7,7 +7,9 @@ import { Link } from 'dva/router'
 
 const mapStateToProps = state => ({
   article: state.articles.article,
-  currentUser: state.user
+  currentUser: state.user.user,
+  profile: state.profile.user,
+  isAuthenticated: state.user.isAuthenticated
 });
 
 
@@ -28,6 +30,8 @@ class Article extends React.Component {
 
             <h1>{this.props.article.title}</h1>
             <ArticleMeta
+              isAuthenticated={this.props.isAuthenticated}
+              profile={this.props.profile}
               article={this.props.article}
               canModify={canModify} />
 

@@ -4,6 +4,8 @@ import React from 'react';
 const DEFAULT_AVATAR_IMAGE = 'https://static.productionready.io/images/smiley-cyrus.jpg'
 const ArticleMeta = props => {
   const article = props.article;
+  const profile = props.profile;
+  const isAuthenticated = props.isAuthenticated;
   return (
     <div className="article-meta">
       <Link to={`/@${article.author.username}`}>
@@ -19,7 +21,11 @@ const ArticleMeta = props => {
         </span>
       </div>
 
-      <ArticleActions canModify={props.canModify} article={article} />
+      <ArticleActions 
+        canModify={props.canModify} 
+        article={article} 
+        profile={profile}
+        isAuthenticated={isAuthenticated}/>
     </div>
   );
 };

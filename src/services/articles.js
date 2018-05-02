@@ -18,3 +18,15 @@ export function feed() {
     method: 'GET'
   });
 }
+
+export function favorite(slug) {
+  return request(`/articles/${slug}/favorite`, {
+    method: 'POST'
+  });
+}
+
+export function unFavorite(slug) {
+  return request(`/articles/${slug}/favorite`, {
+    method: 'DELETE'
+  });
+}
