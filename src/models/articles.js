@@ -60,6 +60,9 @@ export default {
         if (pathname === '/feed') {
           dispatch({ type: 'feed' });
           dispatch({
+            type: 'tags/fetch'
+          });
+          dispatch({
             type: 'addTag',
             payload: {
               tag: '',
@@ -85,13 +88,37 @@ export default {
       yield put({ type: 'save', payload: { article: result.data.article } });
       yield put({ type: 'profile/save', payload: { user: result.data.article.author } });
     },
-    *favorite({ payload }, { call, put }) {
+    *favorite({ payload }, { select, call, put }) {
+      const articles = yield select(({ articles }) => articles.articles);
       const result = yield call(articlesService.favorite, payload.slug);
-      yield put({ type: 'save', payload: { article: result.data.article } });
+      const article = result.data.article;
+      const newArticles = articles.map(item => {
+        if (item.slug === article.slug) {
+          return {
+            ...item,
+            favorited: article.favorited,
+            favoritesCount: article.favoritesCount
+          }
+        }
+        return item;
+      })
+      yield put({ type: 'save', payload: { articles: newArticles, article } });
     },
-    *unFavorite({ payload }, { call, put }) {
+    *unFavorite({ payload }, { select, call, put }) {
+      const articles = yield select(({ articles }) => articles.articles);
       const result = yield call(articlesService.unFavorite, payload.slug);
-      yield put({ type: 'save', payload: { article: result.data.article } });
+      const article = result.data.article;
+      const newArticles = articles.map(item => {
+        if (item.slug === article.slug) {
+          return {
+            ...item,
+            favorited: article.favorited,
+            favoritesCount: article.favoritesCount
+          }
+        }
+        return item;
+      })
+      yield put({ type: 'save', payload: { articles: newArticles, article } });
     },
     *addTag({ payload }, { put }) {
       yield put({ type: 'save', payload })

@@ -42,18 +42,12 @@ export default {
       yield put({ type: 'save', payload: { tab: payload.tab }})
     },
     *follow({ payload }, { select, put, call }) {
-      // const article = yield select(({ articles })=> articles.article);
-      // article.author.following = true;
       const result = yield call(profileService.follow, payload.username);
       yield put({ type: 'save', payload: { user: result.data.profile } });
-      // yield put({ type: 'articles/save', payload: { article } });
     },
     *unfollow({ payload }, { select, put, call }) {
-      // const article = yield select(({ articles })=> articles.article);
-      // article.author.following = false;
       const result = yield call(profileService.unfollow, payload.username);
       yield put({ type: 'save', payload: { user: result.data.profile } });
-      // yield put({ type: 'articles/save', payload: { article } });
     }
   },
 

@@ -1,20 +1,29 @@
 import React from 'react';
 import { Link } from 'dva/router';
+import { connect } from 'dva';
 
 const FAVORITED_CLASS = 'btn btn-sm btn-primary';
 const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
-const DEFAULT_AVATAR_IMAGE = 'https://static.productionready.io/images/smiley-cyrus.jpg'
 
 const ArticlePreview = props => {
   const article = props.article;
   const favoriteButtonClass = article.favorited ? FAVORITED_CLASS : NOT_FAVORITED_CLASS;
-
   const handleClick = ev => {
     ev.preventDefault();
     if (article.favorited) {
-      props.unfavorite(article.slug);
+      props.dispatch({
+        type: 'articles/unFavorite',
+        payload: {
+          slug: article.slug
+        }
+      });
     } else {
-      props.favorite(article.slug);
+      props.dispatch({
+        type: 'articles/favorite',
+        payload: {
+          slug: article.slug
+        }
+      });
     }
   };
 
@@ -22,7 +31,7 @@ const ArticlePreview = props => {
     <div className="article-preview">
       <div className="article-meta">
         <Link to={`/@${article.author.username}`}>
-          <img src={article.author.image ? article.author.image : DEFAULT_AVATAR_IMAGE} alt={article.author.username} />
+          <img src={article.author.image} alt={article.author.username} />
         </Link>
 
         <div className="info">
@@ -61,4 +70,4 @@ const ArticlePreview = props => {
   );
 }
 
-export default ArticlePreview;
+export default connect()(ArticlePreview);
