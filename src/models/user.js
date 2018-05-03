@@ -1,5 +1,5 @@
 import * as userService from '../services/user';
-import { saveToken } from '../utils/storage';
+import { saveToken, destroyToken } from '../utils/storage';
 import { routerRedux } from 'dva/router';
 
 export default {
@@ -30,15 +30,21 @@ export default {
       const result = yield call(userService.current);
       yield put({ type: 'save', payload: { user: result.data.user, isAuthenticated: true }});
     },
+    *update({ payload }, { call, put }) {
+      const result = yield call(userService.update, payload.user);
+      yield put({ type: 'save', payload: { user: result.data.user, isAuthenticated: true }});
+      yield put(routerRedux.push('/'));
+    },
+    *logout({ payload }, { call, put }) {
+      destroyToken()
+      yield put({ type: 'save', payload: { user: null, isAuthenticated: false }});
+      yield put(routerRedux.push('/'));
+    },
     *register({ payload }, { call, put }) {
-      try {
-        const result = yield call(userService.register, payload);
-        yield put({ type: 'save', payload: { user: result.data.user, isAuthenticated: true }});
-        saveToken(result.data.user.token);
-        yield put(routerRedux.push('/'));
-      } catch(e) {
-        console.log(e.response)
-      }
+      const result = yield call(userService.register, payload);
+      yield put({ type: 'save', payload: { user: result.data.user, isAuthenticated: true }});
+      saveToken(result.data.user.token);
+      yield put(routerRedux.push('/'));
     }
   },
 

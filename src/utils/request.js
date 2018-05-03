@@ -23,7 +23,8 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  url = 'http://localhost:7001' + url;
+  // url = 'http://localhost:7001' + url;
+  url = 'https://eggjs-realworld.herokuapp.com' + url;
   options.headers = {
     'Content-Type': 'application/json'
   }

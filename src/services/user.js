@@ -23,3 +23,12 @@ export function current(user) {
     method: 'GET',
   });
 }
+
+export function update(user) {
+  return request('/user', {
+    method: 'PUT',
+    body: JSON.stringify({
+      user
+    })
+  });
+}
