@@ -1,5 +1,6 @@
 import * as articlesService from '../services/articles';
 import pathToRegexp from 'path-to-regexp';
+import { routerRedux } from 'dva/router';
 
 export default {
 
@@ -82,6 +83,11 @@ export default {
     *feed({ payload }, { call, put }) {
       const result = yield call(articlesService.feed);
       yield put({ type: 'save', payload: { articles: result.data.articles } });
+    },
+    *del({ payload }, { call, put }) {
+      yield call(articlesService.del, payload.slug);
+      yield put({ type: 'save', payload: { article: null } });
+      yield put(routerRedux.push('/'));
     },
     *get({ payload }, { call, put }) {
       const result = yield call(articlesService.get, payload.slug);

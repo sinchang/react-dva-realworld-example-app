@@ -12,6 +12,7 @@ app.model(require('./models/articles').default);
 app.model(require('./models/user').default);
 app.model(require('./models/tags').default);
 app.model(require('./models/profile').default);
+app.model(require('./models/editor').default);
 
 // 4. Router
 app.router(require('./router').default);

@@ -6,6 +6,7 @@ import Article from './routes/Article';
 import Profile from './routes/Profile';
 import Login from './routes/Login';
 import Settings from './routes/Settings';
+import Editor from './routes/Editor';
 
 function RouterConfig({ history }) {
   return (
@@ -15,6 +16,8 @@ function RouterConfig({ history }) {
         <Route path="/register" exact component={Register} />
         <Route path="/login" exact component={Login} />
         <Route path="/settings" exact component={Settings} />
+        <Route path="/editor" exact component={Editor} />
+        <Route path="/editor/:slug" exact component={Editor} />
         <Route path="/article/:slug" exact component={Article} />
         <Route path="/tag/:tag" exact component={Home} />
         <Route path="/feed" exact component={Home} />

@@ -6,7 +6,12 @@ const ArticleActions = props => {
   const article = props.article;
   const profile = props.profile;
   const del = () => {
-    // props.onClickDelete(agent.Articles.del(article.slug))
+    props.dispatch({
+      type: 'articles/del',
+      payload: {
+        slug: article.slug
+      }
+    })
   };
 
   const FollowUserButton = () => {
