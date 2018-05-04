@@ -10,7 +10,9 @@ export default {
     articles: [],
     article: null,
     tag: '',
-    tab: 'all'
+    tab: 'all',
+    articlesCount: 0,
+    currentPage: 0
   },
 
   subscriptions: {
@@ -78,11 +80,17 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const result = yield call(articlesService.fetch,  payload);
-      yield put({ type: 'save', payload: { articles: result.data.articles } });
+      yield put({ type: 'save', payload: { 
+        articles: result.data.articles,
+        articlesCount: result.data.articlesCount
+      }});
     },
     *feed({ payload }, { call, put }) {
       const result = yield call(articlesService.feed);
-      yield put({ type: 'save', payload: { articles: result.data.articles } });
+      yield put({ type: 'save', payload: { 
+        articles: result.data.articles,
+        articlesCount: result.data.articlesCount
+      }});
     },
     *del({ payload }, { call, put }) {
       yield call(articlesService.del, payload.slug);
@@ -128,6 +136,38 @@ export default {
     },
     *addTag({ payload }, { put }) {
       yield put({ type: 'save', payload })
+    },
+    *onSetPage({ payload }, { put, call, select }) {
+      const state = yield select(state => state);
+      console.log(state)
+      yield put({ type: 'save', payload });
+      const params = {
+        offset: payload.currentPage * 10
+      };
+      const type = payload.type;
+      let result;
+      console.log(type)
+      if (type === 'tag') {
+        params.tag = state.articles.tag
+      }
+
+      if (type === 'my') {
+        params.author = state.profile.user.username
+      }
+
+      if (type === 'favorited') {
+        params.favorited = state.profile.user.username
+      }
+
+      if (type === 'feed') {
+        result = yield call(articlesService.feed,  params);
+      } else {
+        result = yield call(articlesService.fetch,  params);
+      }
+
+      yield put({ type: 'save', payload: { 
+        articles: result.data.articles
+      }});
     }
   },
 

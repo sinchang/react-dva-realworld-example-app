@@ -2,7 +2,6 @@ import ArticleList from './ArticleList';
 import React from 'react';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
-const DEFAULT_AVATAR_IMAGE = 'https://static.productionready.io/images/smiley-cyrus.jpg'
 
 const EditProfileSettings = props => {
   if (props.isUser) {
@@ -53,6 +52,8 @@ const mapStateToProps = state => ({
   profile: state.profile.user,
   currentUser: state.user.user,
   articles: state.articles.articles,
+  currentPage: state.articles.currentPage,
+  articlesCount: state.articles.articlesCount,
   tab: state.profile.tab,
   isAuthenticated: state.user.isAuthenticated
 });
@@ -110,7 +111,7 @@ class Profile extends React.Component {
             <div className="row">
               <div className="col-xs-12 col-md-10 offset-md-1">
 
-                <img src={profile.image ? profile.image : DEFAULT_AVATAR_IMAGE} className="user-img" alt={profile.username} />
+                <img src={profile.image} className="user-img" alt={profile.username} />
                 <h4>{profile.username}</h4>
                 <p>{profile.bio}</p>
 
@@ -137,10 +138,11 @@ class Profile extends React.Component {
               </div>
 
               <ArticleList
-                pager={this.props.pager}
+                pager={Math.ceil(this.props.articlesCount / 10)}
+                type={this.props.tab}
                 articles={this.props.articles}
                 articlesCount={this.props.articlesCount}
-                state={this.props.currentPage} />
+                currentPage={this.props.currentPage} />
             </div>
 
           </div>

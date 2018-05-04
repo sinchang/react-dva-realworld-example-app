@@ -45,12 +45,21 @@ const TagFilterTab = props => {
 
 const mapStateToProps = state => ({
   articles: state.articles.articles,
+  articlesCount: state.articles.articlesCount,
+  currentPage: state.articles.currentPage,
   isAuthenticated: state.user.isAuthenticated,
   tab: state.articles.tab,
   tag: state.articles.tag
 });
 
-function MainView({ dispatch, articles, isAuthenticated, tab, tag }) {
+function MainView({ 
+  dispatch, 
+  articles, 
+  isAuthenticated, 
+  tab, 
+  tag, 
+  articlesCount, 
+  currentPage }) {
   return (
     <div className="col-md-9">
       <div className="feed-toggle">
@@ -68,11 +77,11 @@ function MainView({ dispatch, articles, isAuthenticated, tab, tag }) {
       </div>
 
       <ArticleList
-        pager='12'
+        pager={Math.ceil(articlesCount / 10)}
         articles={articles}
-        loading='false'
-        articlesCount='12'
-        currentPage='1' />
+        type={tab}
+        articlesCount={articlesCount}
+        currentPage={currentPage} />
     </div>
   );
 };

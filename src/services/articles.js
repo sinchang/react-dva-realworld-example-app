@@ -13,8 +13,8 @@ export function get(slug) {
   });
 }
 
-export function feed() {
-  return request(`/articles/feed`, {
+export function feed(query = {}) {
+  return request(`/articles/feed?${qs.stringify(query)}`, {
     method: 'GET'
   });
 }

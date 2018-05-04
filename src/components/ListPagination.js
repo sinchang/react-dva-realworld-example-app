@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'dva';
 
 const ListPagination = props => {
   if (props.articlesCount <= 10) {
@@ -11,11 +12,13 @@ const ListPagination = props => {
   }
 
   const setPage = page => {
-    if(props.pager) {
-      props.onSetPage(page, props.pager(page));
-    }else {
-      props.onSetPage(page)
-    }
+    props.dispatch({
+      type: 'articles/onSetPage',
+      payload: {
+        currentPage: page,
+        type: props.type
+      }
+    })
   };
 
   return (
@@ -47,4 +50,4 @@ const ListPagination = props => {
   );
 };
 
-export default ListPagination;
+export default connect()(ListPagination);
