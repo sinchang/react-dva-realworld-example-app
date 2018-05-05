@@ -139,14 +139,12 @@ export default {
     },
     *onSetPage({ payload }, { put, call, select }) {
       const state = yield select(state => state);
-      console.log(state)
       yield put({ type: 'save', payload });
       const params = {
         offset: payload.currentPage * 10
       };
       const type = payload.type;
       let result;
-      console.log(type)
       if (type === 'tag') {
         params.tag = state.articles.tag
       }

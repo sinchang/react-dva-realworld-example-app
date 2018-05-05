@@ -1,5 +1,5 @@
 import ArticleMeta from './ArticleMeta';
-// import CommentContainer from './CommentContainer';
+import CommentContainer from './CommentContainer';
 import React from 'react';
 import { connect } from 'dva';
 import marked from 'marked';
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   article: state.articles.article,
   currentUser: state.user.user,
   profile: state.profile.user,
+  comments: state.comments.comments,
   isAuthenticated: state.user.isAuthenticated
 });
 
@@ -70,11 +71,11 @@ class Article extends React.Component {
           </div>
 
           <div className="row">
-            {/* <CommentContainer
-              comments={this.props.comments || []}
-              errors={this.props.commentErrors}
-              slug={this.props.match.params.id}
-              currentUser={this.props.currentUser} /> */}
+            <CommentContainer
+              comments={this.props.comments}
+              // errors={this.props.commentErrors}
+              slug={this.props.article.slug}
+              currentUser={this.props.currentUser} />
           </div>
         </div>
       </div>
