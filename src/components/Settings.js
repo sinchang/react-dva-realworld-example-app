@@ -41,7 +41,7 @@ class SettingsForm extends React.Component {
       Object.assign(this.state, {
         image: this.props.currentUser.image || '',
         username: this.props.currentUser.username,
-        bio: this.props.currentUser.bio,
+        bio: this.props.currentUser.bio || '',
         email: this.props.currentUser.email
       });
     }
@@ -52,7 +52,7 @@ class SettingsForm extends React.Component {
       this.setState(Object.assign({}, this.state, {
         image: nextProps.currentUser.image || '',
         username: nextProps.currentUser.username,
-        bio: nextProps.currentUser.bio,
+        bio: nextProps.currentUser.bio || '',
         email: nextProps.currentUser.email
       }));
     }
